@@ -109,10 +109,10 @@ for query in queries:
         for page in range(2, math.ceil(results["count"] / ITEMS_PER_PAGE)):
             page_results = search_ebay(query['query'], query["exclude"], query["price_max"], page)
             results["results"].extend(page_results["results"])
-            time.sleep(1)
+            time.sleep(4)
 
     listings[query["query"]] = results["results"]
-    time.sleep(2)
+    time.sleep(5)
 
 
 listings_in_json = json.dumps(listings)
