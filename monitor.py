@@ -4,6 +4,7 @@ import json
 import re
 import time
 import math
+import random
 
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
@@ -24,17 +25,25 @@ def search_ebay(keyword, exclude, price_max=210.0, page=1):
     soup = BeautifulSoup(response.text, "html.parser")
 
     results = []
-
-    with open("debug.html", "w", encoding="utf-8") as f:
-        f.write(soup.prettify())
-
+    
+    results_count = 0
     try:
-        results_count = soup.select(".result-count__count-heading")[0].get_text()
-        match = re.search(r"(\d[\d,]*)", results_count)
-        if match:
-            results_count = int(match.group(1).replace(",", ""))
-    except:
-        results_count = 0
+        count_heading = soup.select(".result-count__count-heading")
+        print('count_heading', count_heading)
+        if len(count_heading):
+            results_count = count_heading[0].get_text()
+            match = re.search(r"(\d[\d,]*)", results_count)
+            if match:
+                results_count = int(match.group(1).replace(",", ""))
+            
+        else:
+            raise Exception("Something went wrong.")    
+
+    except Exception as exception:
+        print(exception)
+        with open("debug.html", "w", encoding="utf-8") as f:
+            f.write(soup.prettify())
+        
 
     print('results_count', results_count)
 
@@ -154,10 +163,10 @@ for query in queries:
         for page in range(2, math.ceil(results["count"] / ITEMS_PER_PAGE)):
             page_results = search_ebay(query['query'], query["exclude"], query["price_max"], page)
             results["results"].extend(page_results["results"])
-            time.sleep(5)
+            time.sleep(random.uniform(2, 9))
 
     listings[query["query"]] = results["results"]
-    time.sleep(5)
+    time.sleep(random.uniform(2, 9))
 
 
 listings_in_json = json.dumps(listings)
