@@ -4,45 +4,140 @@
   <meta charset="UTF-8">
   <title>eBay Pokémon Monitor</title>
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 1em; }
-    h2 { color: #0074cc; }
-    a { text-decoration: none; color: #222; }
-    .item { margin-bottom: 1em; }
+    body {
+      font-family: sans-serif;
+      max-width: 900px;
+      margin: auto;
+      padding: 1em;
+    }
+    h1 {
+      text-align: center;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 1em;
+      border-bottom: 2px solid #ccc;
+    }
+    .tab {
+      padding: 0.5em 1em;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      background-color: #f2f2f2;
+      margin-right: 5px;
+      border-radius: 6px 6px 0 0;
+    }
+    .tab.active {
+      background-color: white;
+      border-bottom: 2px solid white;
+      font-weight: bold;
+    }
+    .listings {
+      display: none;
+    }
+    .listings.active {
+      display: block;
+    }
+    a {
+      text-decoration: none;
+      color: #222;
+      display: flex;
+    }
+    .item {
+      margin-bottom: 1em;
+    }
+    .image-container {
+      background-color: #f7f7f7;
+    }
+    .image {
+      width: 200px;
+      height: 200px;
+      background-position: center;
+      background-size: cover;
+      display: block;
+    }
+    .details {
+      margin: 20px;
+    }
   </style>
 </head>
 <body>
   <h1>eBay Pokémon Monitor</h1>
-  <div id="listings"></div>
+  <div class="tabs" id="tabs"></div>
+  <div id="listings-container"></div>
 
   <script>
     fetch('ebay-listing.json')
       .then(response => response.json())
       .then(data => {
-        const container = document.getElementById('listings');
+        const tabsContainer = document.getElementById('tabs');
+        const listingsContainer = document.getElementById('listings-container');
+        let first = true;
+
         for (const key in data) {
-          const group = document.createElement('div');
-          const heading = document.createElement('h2');
-          heading.textContent = key.toUpperCase();
-          group.appendChild(heading);
+          // Criar aba
+          const tab = document.createElement('div');
+          tab.className = 'tab';
+          tab.textContent = key;
+          tab.dataset.target = `listings-${key}`;
+          if (first) tab.classList.add('active');
+          tabsContainer.appendChild(tab);
+
+          // Criar container da listagem
+          const listingsDiv = document.createElement('div');
+          listingsDiv.className = 'listings';
+          listingsDiv.id = `listings-${key}`;
+          if (first) listingsDiv.classList.add('active');
+          first = false;
 
           data[key].forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'item';
-            div.innerHTML = `<a href="${item.url}" style="display: flex" target="_blank">
-                <div style="background-color: #f7f7f7">
-                  <div style="width: 200px; display: block; height: 200px; background-image: url('${item.image_url}'); background-position: center;"></div>
-                </div>
-                <div style="margin: 20px;">
-                  <div>${item.title}</div>
-                  <strong>$${item.price}</strong>
-                </div>
-              </a>
-            `;
-            group.appendChild(div);
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item';
+
+            const link = document.createElement('a');
+            link.href = item.url;
+            link.target = '_blank';
+
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'image-container';
+
+            const imageDiv = document.createElement('div');
+            imageDiv.className = 'image';
+            imageDiv.style.backgroundImage = `url('${item.image_url}')`;
+
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'details';
+
+            const titleDiv = document.createElement('div');
+            titleDiv.textContent = item.title;
+
+            const priceStrong = document.createElement('strong');
+            priceStrong.textContent = `$${item.price}`;
+
+            imageContainer.appendChild(imageDiv);
+            detailsDiv.appendChild(titleDiv);
+            detailsDiv.appendChild(priceStrong);
+            link.appendChild(imageContainer);
+            link.appendChild(detailsDiv);
+            itemDiv.appendChild(link);
+            listingsDiv.appendChild(itemDiv);
           });
 
-          container.appendChild(group);
+          listingsContainer.appendChild(listingsDiv);
         }
+
+        // Eventos de clique nas abas
+        document.querySelectorAll('.tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.listings').forEach(l => l.classList.remove('active'));
+
+            tab.classList.add('active');
+            const targetId = tab.dataset.target;
+            document.getElementById(targetId).classList.add('active');
+          });
+        });
       });
   </script>
 </body>
