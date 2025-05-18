@@ -35,9 +35,9 @@ def search_ebay(keyword, exclude, price_max=210.0, page=1):
             results_count = int(match.group(1).replace(",", ""))
     except:
         results_count = 0
-    
-    print('results_count',results_count)
-    
+
+    print('results_count', results_count)
+
     for item in soup.select(".s-item"):
         title = item.select_one(".s-item__title")
         price = item.select_one(".s-item__price")
@@ -75,6 +75,36 @@ def search_ebay(keyword, exclude, price_max=210.0, page=1):
 
 queries = [
     {
+        "query": "pokemon silver",
+        "price_max": 220,
+        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon gold",
+        "price_max": 220,
+        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon red",
+        "price_max": 220,
+        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon leaf green",
+        "price_max": 220,
+        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon ruby",
+        "price_max": 220,
+        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon sapphire",
+        "price_max": 220,
+        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
         "query": "pokemon emerald",
         "price_max": 220,
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
@@ -91,14 +121,29 @@ queries = [
     },
     {
         "query": "pokemon black",
-        "price_max": 150,
+        "price_max": 190,
         "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon white",
-        "price_max": 140,
+        "price_max": 190,
         "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
-    }
+    },
+    {
+        "query": "pokemon diamond",
+        "price_max": 190,
+        "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon pearl",
+        "price_max": 190,
+        "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon platinum",
+        "price_max": 190,
+        "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
+    },
 ]
 
 listings = {}
@@ -109,7 +154,7 @@ for query in queries:
         for page in range(2, math.ceil(results["count"] / ITEMS_PER_PAGE)):
             page_results = search_ebay(query['query'], query["exclude"], query["price_max"], page)
             results["results"].extend(page_results["results"])
-            time.sleep(4)
+            time.sleep(5)
 
     listings[query["query"]] = results["results"]
     time.sleep(5)
