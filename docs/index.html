@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>eBay Pokémon Monitor</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 1em; }
+    h2 { color: #0074cc; }
+    a { text-decoration: none; color: #222; }
+    .item { margin-bottom: 1em; }
+  </style>
+</head>
+<body>
+  <h1>eBay Pokémon Monitor</h1>
+  <div id="listings"></div>
+
+  <script>
+    fetch('ebay-listing.json')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('listings');
+        for (const key in data) {
+          const group = document.createElement('div');
+          const heading = document.createElement('h2');
+          heading.textContent = key.toUpperCase();
+          group.appendChild(heading);
+
+          data[key].forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.innerHTML = `<a href="${item.url}" target="_blank">${item.title}</a><br><strong>$${item.price}</strong>`;
+            group.appendChild(div);
+          });
+
+          container.appendChild(group);
+        }
+      });
+  </script>
+</body>
+</html>
