@@ -65,13 +65,12 @@ def search_ebay(keyword, exclude, price_max=210.0, page=1):
                 price_str = price.get_text().replace("C $", "").replace("$", "").replace(",", "").strip()
                 price = float(price_str.split(" ")[0])  # às vezes o preço vem com 'to'
 
-                if price <= price_max:
-                    results.append({
-                        "title": title.get_text(),
-                        "price": price,
-                        "url": link["href"],
-                        "image_url": image_url
-                    })
+                results.append({
+                    "title": title.get_text(),
+                    "price": price,
+                    "url": link["href"],
+                    "image_url": image_url
+                })
             except Exception as exception:
                 print(exception)
                 continue
@@ -85,72 +84,58 @@ def search_ebay(keyword, exclude, price_max=210.0, page=1):
 queries = [
     {
         "query": "pokemon silver",
-        "price_max": 220,
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon gold",
-        "price_max": 220,
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon red",
-        "price_max": 220,
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon leaf green",
-        "price_max": 220,
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon ruby",
-        "price_max": 220,
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon sapphire",
-        "price_max": 220,
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon emerald",
-        "price_max": 220,
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon soul silver",
-        "price_max": 200,
         "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon heart gold",
-        "price_max": 200,
         "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon black",
-        "price_max": 190,
         "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon white",
-        "price_max": 190,
         "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon diamond",
-        "price_max": 190,
         "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon pearl",
-        "price_max": 190,
         "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon platinum",
-        "price_max": 190,
         "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     },
 ]
