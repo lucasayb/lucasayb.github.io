@@ -8,33 +8,36 @@ from fake_useragent import UserAgent
 
 ua = UserAgent()
 
+
 def search_ebay(keyword, exclude, price_max=210.0, page=1):
     headers = {'User-Agent': ua.random}
     query = keyword.replace(" ", "+")
-    url = f"https://www.ebay.ca/sch/i.html?_nkw={query}&_sop=15&_pgn=1&_dcat=139973&Region%2520Code=%21%7CRegion%2520Free%7CNTSC%252DU%252FC%2520%2528US%252FCanada%2529%7CPAL&LH_BIN=1&_sop=15&_ipg=240&_pgn={page}"  # Sort by Price + Shipping: Lowest First
+    # Sort by Price + Shipping: Lowest First
+    url = f"https://www.ebay.ca/sch/i.html?_nkw={query}&_sop=15&_pgn=1&_dcat=139973&Region%2520Code=%21%7CRegion%2520Free%7CNTSC%252DU%252FC%2520%2528US%252FCanada%2529%7CPAL&LH_BIN=1&_sop=15&_ipg=240&_pgn={page}"
 
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
     results = []
-    
+
     for item in soup.select(".s-item"):
         title = item.select_one(".s-item__title")
         price = item.select_one(".s-item__price")
         link = item.select_one(".s-item__link")
-        image_url = item.select_one(".s-item__image-wrapper.image-treatment img")["src"].replace("s-l50","s-l300")
+        image_url = item.select_one(".s-item__image-wrapper.image-treatment img")["src"].replace("s-l50", "s-l300")
         if image_url == "https://ir.ebaystatic.com/cr/v/c1/s_1x2.gif":
-            image_url = item.select_one(".s-item__image-wrapper.image-treatment img")["data-src"].replace("s-l50","s-l300")
-        
+            image_url = item.select_one(
+                ".s-item__image-wrapper.image-treatment img")["data-src"].replace("s-l50", "s-l300")
+
         if title and price and link:
-            for query_to_exclude in exclude:
-                if query_to_exclude.lower() in title.get_text().lower():
-                    continue
+            title_text = title.get_text().lower()
+            if any(word in title_text for word in exclude):
+                continue
 
             try:
                 price_str = price.get_text().replace("C $", "").replace(",", "").strip()
                 price = float(price_str.split(" ")[0])  # às vezes o preço vem com 'to'
-                
+
                 if price <= price_max:
                     results.append({
                         "title": title.get_text(),
@@ -53,17 +56,27 @@ queries = [
     {
         "query": "pokemon emerald",
         "price_max": 220,
-        "exclude": ["japan", "japanese", "no game", "manual only"]
+        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon soul silver",
         "price_max": 200,
-        "exclude": ["japan", "japanese", "no game", "manual only", "walker"]
+        "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     },
     {
         "query": "pokemon heart gold",
         "price_max": 200,
-        "exclude": ["japan", "japanese", "no game", "manual only", "walker"]
+        "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon black",
+        "price_max": 150,
+        "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon white",
+        "price_max": 140,
+        "exclude": ["japan", "japanese", "no game", "walker", "case & manual only", "case and manual only", "- manual only"]
     }
 ]
 
