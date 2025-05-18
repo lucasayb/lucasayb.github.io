@@ -83,11 +83,7 @@ def search_ebay(keyword, exclude, price_max=210.0, page=1):
 
 queries = [
     {
-        "query": "pokemon silver",
-        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
-    },
-    {
-        "query": "pokemon gold",
+        "query": "pokemon yellow",
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
@@ -96,6 +92,14 @@ queries = [
     },
     {
         "query": "pokemon leaf green",
+        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon silver",
+        "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
+    },
+    {
+        "query": "pokemon gold",
         "exclude": ["japan", "japanese", "no game", "case & manual only", "case and manual only", "- manual only"]
     },
     {
