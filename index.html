@@ -1,144 +1,192 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>eBay Pokémon Monitor</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      max-width: 900px;
-      margin: auto;
-      padding: 1em;
-    }
-    h1 {
-      text-align: center;
-    }
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      margin-bottom: 1em;
-      border-bottom: 2px solid #ccc;
-    }
-    .tab {
-      padding: 0.5em 1em;
-      cursor: pointer;
-      border: 1px solid #ccc;
-      border-bottom: none;
-      background-color: #f2f2f2;
-      margin-right: 5px;
-      border-radius: 6px 6px 0 0;
-    }
-    .tab.active {
-      background-color: white;
-      border-bottom: 2px solid white;
-      font-weight: bold;
-    }
-    .listings {
-      display: none;
-    }
-    .listings.active {
-      display: block;
-    }
-    a {
-      text-decoration: none;
-      color: #222;
-      display: flex;
-    }
-    .item {
-      margin-bottom: 1em;
-    }
-    .image-container {
-      background-color: #f7f7f7;
-    }
-    .image {
-      width: 200px;
-      height: 200px;
-      background-position: center;
-      background-size: cover;
-      display: block;
-    }
-    .details {
-      margin: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h1>eBay Pokémon Monitor</h1>
-  <div class="tabs" id="tabs"></div>
-  <div id="listings-container"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>eBay Pokémon Monitor</title>
+    <!-- Meta Tags Essenciais -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Monitore automaticamente os preços de jogos e cartas Pokémon no eBay com este visualizador atualizado."
+    />
+    <meta
+      name="keywords"
+      content="Pokémon, eBay, monitor, jogos Pokémon, cartas Pokémon, preços, ofertas, compra, colecionáveis"
+    />
+    <meta name="author" content="Lucas Yamamoto" />
 
-  <script>
-    fetch('ebay-listing.json')
-      .then(response => response.json())
-      .then(data => {
-        const tabsContainer = document.getElementById('tabs');
-        const listingsContainer = document.getElementById('listings-container');
-        let first = true;
+    <!-- Open Graph (para compartilhamento em redes sociais) -->
+    <meta property="og:title" content="eBay Pokémon Monitor" />
+    <meta
+      property="og:description"
+      content="Acompanhe as melhores ofertas de jogos e cartas Pokémon no eBay com atualização automática."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://seusite.com/" />
+    <!-- Substitua pelo link real -->
+    <meta
+      property="og:image"
+      content="https://seusite.com/imagem-preview.jpg"
+    />
+    <!-- Opcional -->
 
-        for (const key in data) {
-          // Criar aba
-          const tab = document.createElement('div');
-          tab.className = 'tab';
-          tab.textContent = key;
-          tab.dataset.target = `listings-${key}`;
-          if (first) tab.classList.add('active');
-          tabsContainer.appendChild(tab);
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="eBay Pokémon Monitor" />
+    <meta
+      name="twitter:description"
+      content="Veja os melhores preços e achados de Pokémon no eBay. Atualizado automaticamente."
+    />
+    <meta
+      name="twitter:image"
+      content="https://seusite.com/imagem-preview.jpg"
+    />
+    <!-- Opcional -->
 
-          // Criar container da listagem
-          const listingsDiv = document.createElement('div');
-          listingsDiv.className = 'listings';
-          listingsDiv.id = `listings-${key}`;
-          if (first) listingsDiv.classList.add('active');
-          first = false;
+    <!-- Favicon (opcional mas recomendado) -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-          data[key].forEach(item => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'item';
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 900px;
+        margin: auto;
+        padding: 1em;
+      }
+      h1 {
+        text-align: center;
+      }
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 1em;
+        border-bottom: 2px solid #ccc;
+      }
+      .tab {
+        padding: 0.5em 1em;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        background-color: #f2f2f2;
+        margin-right: 5px;
+        border-radius: 6px 6px 0 0;
+      }
+      .tab.active {
+        background-color: white;
+        border-bottom: 2px solid white;
+        font-weight: bold;
+      }
+      .listings {
+        display: none;
+      }
+      .listings.active {
+        display: block;
+      }
+      a {
+        text-decoration: none;
+        color: #222;
+        display: flex;
+      }
+      .item {
+        margin-bottom: 1em;
+      }
+      .image-container {
+        background-color: #f7f7f7;
+      }
+      .image {
+        width: 200px;
+        height: 200px;
+        background-position: center;
+        background-size: cover;
+        display: block;
+      }
+      .details {
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>eBay Pokémon Monitor</h1>
+    <div class="tabs" id="tabs"></div>
+    <div id="listings-container"></div>
 
-            const link = document.createElement('a');
-            link.href = item.url;
-            link.target = '_blank';
+    <script>
+      fetch("ebay-listing.json")
+        .then((response) => response.json())
+        .then((data) => {
+          const tabsContainer = document.getElementById("tabs");
+          const listingsContainer =
+            document.getElementById("listings-container");
+          let first = true;
 
-            const imageContainer = document.createElement('div');
-            imageContainer.className = 'image-container';
+          for (const key in data) {
+            // Criar aba
+            const tab = document.createElement("div");
+            tab.className = "tab";
+            tab.textContent = key;
+            tab.dataset.target = `listings-${key}`;
+            if (first) tab.classList.add("active");
+            tabsContainer.appendChild(tab);
 
-            const imageDiv = document.createElement('div');
-            imageDiv.className = 'image';
-            imageDiv.style.backgroundImage = `url('${item.image_url}')`;
+            // Criar container da listagem
+            const listingsDiv = document.createElement("div");
+            listingsDiv.className = "listings";
+            listingsDiv.id = `listings-${key}`;
+            if (first) listingsDiv.classList.add("active");
+            first = false;
 
-            const detailsDiv = document.createElement('div');
-            detailsDiv.className = 'details';
+            data[key].forEach((item) => {
+              const itemDiv = document.createElement("div");
+              itemDiv.className = "item";
 
-            const titleDiv = document.createElement('div');
-            titleDiv.textContent = item.title;
+              const link = document.createElement("a");
+              link.href = item.url;
+              link.target = "_blank";
 
-            const priceStrong = document.createElement('strong');
-            priceStrong.textContent = `$${item.price}`;
+              const imageContainer = document.createElement("div");
+              imageContainer.className = "image-container";
 
-            imageContainer.appendChild(imageDiv);
-            detailsDiv.appendChild(titleDiv);
-            detailsDiv.appendChild(priceStrong);
-            link.appendChild(imageContainer);
-            link.appendChild(detailsDiv);
-            itemDiv.appendChild(link);
-            listingsDiv.appendChild(itemDiv);
-          });
+              const imageDiv = document.createElement("div");
+              imageDiv.className = "image";
+              imageDiv.style.backgroundImage = `url('${item.image_url}')`;
 
-          listingsContainer.appendChild(listingsDiv);
-        }
+              const detailsDiv = document.createElement("div");
+              detailsDiv.className = "details";
 
-        // Eventos de clique nas abas
-        document.querySelectorAll('.tab').forEach(tab => {
-          tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.listings').forEach(l => l.classList.remove('active'));
+              const titleDiv = document.createElement("div");
+              titleDiv.textContent = item.title;
 
-            tab.classList.add('active');
-            const targetId = tab.dataset.target;
-            document.getElementById(targetId).classList.add('active');
+              const priceStrong = document.createElement("strong");
+              priceStrong.textContent = `$${item.price}`;
+
+              imageContainer.appendChild(imageDiv);
+              detailsDiv.appendChild(titleDiv);
+              detailsDiv.appendChild(priceStrong);
+              link.appendChild(imageContainer);
+              link.appendChild(detailsDiv);
+              itemDiv.appendChild(link);
+              listingsDiv.appendChild(itemDiv);
+            });
+
+            listingsContainer.appendChild(listingsDiv);
+          }
+
+          // Eventos de clique nas abas
+          document.querySelectorAll(".tab").forEach((tab) => {
+            tab.addEventListener("click", () => {
+              document
+                .querySelectorAll(".tab")
+                .forEach((t) => t.classList.remove("active"));
+              document
+                .querySelectorAll(".listings")
+                .forEach((l) => l.classList.remove("active"));
+
+              tab.classList.add("active");
+              const targetId = tab.dataset.target;
+              document.getElementById(targetId).classList.add("active");
+            });
           });
         });
-      });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
