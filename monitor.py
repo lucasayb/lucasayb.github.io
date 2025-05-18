@@ -15,7 +15,7 @@ ua = UserAgent()
 ITEMS_PER_PAGE = 240
 
 
-def search_ebay(keyword, exclude, price_max=210.0, page=1):
+def search_ebay(keyword, exclude, page=1):
     headers = {'User-Agent': ua.random}
     query = keyword.replace(" ", "+")
     # Sort by Price + Shipping: Lowest First
@@ -147,10 +147,10 @@ queries = [
 listings = {}
 
 for query in queries:
-    results = search_ebay(query['query'], query["exclude"], query["price_max"], 1)
+    results = search_ebay(query['query'], query["exclude"], 1)
     if results["count"] > ITEMS_PER_PAGE:
         for page in range(2, math.ceil(results["count"] / ITEMS_PER_PAGE)):
-            page_results = search_ebay(query['query'], query["exclude"], query["price_max"], page)
+            page_results = search_ebay(query['query'], query["exclude"], page)
             results["results"].extend(page_results["results"])
             time.sleep(random.uniform(2, 9))
 
