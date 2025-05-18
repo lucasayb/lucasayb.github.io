@@ -22,7 +22,10 @@ def search_ebay(keyword, exclude, price_max=210.0, page=1):
         title = item.select_one(".s-item__title")
         price = item.select_one(".s-item__price")
         link = item.select_one(".s-item__link")
-
+        image_url = item.select_one(".s-item__image-wrapper.image-treatment img")["src"].replace("s-l50","s-l300")
+        if image_url == "https://ir.ebaystatic.com/cr/v/c1/s_1x2.gif":
+            image_url = item.select_one(".s-item__image-wrapper.image-treatment img")["data-src"].replace("s-l50","s-l300")
+        
         if title and price and link:
             for query_to_exclude in exclude:
                 if query_to_exclude.lower() in title.get_text().lower():
@@ -36,7 +39,8 @@ def search_ebay(keyword, exclude, price_max=210.0, page=1):
                     results.append({
                         "title": title.get_text(),
                         "price": price,
-                        "url": link["href"]
+                        "url": link["href"],
+                        "image_url": image_url
                     })
             except Exception as exception:
                 print(exception)
