@@ -25,10 +25,7 @@ jobs:
 
       - name: Executar o crawler
         run: python monitor.py
-
-      - name: Gerar JSON com o monitor
-        run: python monitor.py
-
+        
       - name: Commit e push do JSON gerado
         run: |
           git config user.name "github-actions[bot]"
