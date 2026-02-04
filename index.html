@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Yamamoto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Courier New', Consolas, monospace;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .terminal {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .prompt {
+            color: #58a6ff;
+        }
+
+        .command {
+            color: #8b949e;
+        }
+
+        .output {
+            margin: 10px 0 30px 0;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border: 2px solid #30363d;
+            border-radius: 4px;
+            margin: 10px 0;
+            object-fit: cover;
+            object-position: center 30%;
+        }
+
+        h1, h2 {
+            color: #58a6ff;
+            font-weight: normal;
+        }
+
+        h1 {
+            font-size: 1.5em;
+        }
+
+        h2 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .tech {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            padding: 5px 12px;
+            font-size: 14px;
+            color: #7ee787;
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .social-links a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .bluesky-feed {
+            margin: 10px 0;
+            max-width: 500px;
+        }
+
+        bsky-embed {
+            --bsky-font: 'Courier New', Consolas, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <div class="section">
+            <span class="prompt">visitor@lucasayb:~$</span> <span class="command">cat about.txt</span>
+            <div class="output">
+                <img src="profile.png" alt="Lucas Yamamoto" class="profile-photo">
+                <h1>Lucas Yamamoto</h1>
+                <p>Software Developer</p>
+                <br>
+                <p>Hello! I'm a passionate developer who loves building things with code.</p>
+                <p>Currently exploring new technologies and contributing to open source.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <span class="prompt">visitor@lucasayb:~$</span> <span class="command">ls technologies/</span>
+            <div class="output">
+                <div class="tech-list">
+                    <span class="tech">C</span>
+                    <span class="tech">C++</span>
+                    <span class="tech">Python</span>
+                    <span class="tech">LangGraph</span>
+                    <span class="tech">PHP</span>
+                    <span class="tech">Ruby</span>
+                    <span class="tech">Typescript</span>
+                    <span class="tech">Go</span>
+                    <span class="tech">AWS</span>
+                    <span class="tech">Azure</span>
+                    <span class="tech">Postgres</span>
+                    <span class="tech">Raylib</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <span class="prompt">visitor@lucasayb:~$</span> <span class="command">cat social.json</span>
+            <div class="output">
+                <div class="social-links">
+                    <a href="https://bsky.app/profile/lucasyamamoto.com" target="_blank">[BlueSky]</a>
+                    <a href="https://linkedin.com/in/lucasayb" target="_blank">[LinkedIn]</a>
+                    <a href="https://stackoverflow.com/users/10078162" target="_blank">[StackOverflow]</a>
+                    <a href="https://x.com/lucasayb" target="_blank">[X/Twitter]</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <span class="prompt">visitor@lucasayb:~$</span> <span class="command">curl api.bsky.app/feed</span>
+            <div class="output">
+                <div class="bluesky-feed">
+                    <bsky-embed
+                        username="lucasyamamoto.com"
+                        limit="5"
+                        mode="dark">
+                    </bsky-embed>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <span class="prompt">visitor@lucasayb:~$</span> <span class="cursor">_</span>
+        </div>
+    </div>
+
+    <script async src="https://cdn.jsdelivr.net/npm/bsky-embed/dist/bsky-embed.es.js" type="module"></script>
+</body>
+</html>
