@@ -173,17 +173,6 @@
             51%, 100% { opacity: 0; }
         }
 
-        .bluesky-feed {
-            margin: 10px 0;
-            max-width: 100%;
-            height: 400px;
-            overflow-y: auto;
-        }
-
-        bsky-embed {
-            --bsky-font: 'Courier New', Consolas, monospace;
-        }
-
         pre {
             white-space: pre-wrap;
             word-break: break-word;
@@ -220,10 +209,6 @@
             .tech {
                 padding: 4px 10px;
                 font-size: 13px;
-            }
-
-            .bluesky-feed {
-                max-width: 100%;
             }
 
             .desktop-only {
@@ -300,16 +285,9 @@
         </div>
 
         <div class="section">
-            <span class="prompt">visitor@lucasayb:~$</span> <span class="command">curl api.bsky.app/feed</span>
+            <span class="prompt">visitor@lucasayb:~$</span> <span class="command">curl api.github.com/contributions</span>
             <div class="output">
-                <div class="bluesky-feed">
-                    <bsky-embed
-                        username="lucasyamamoto.com"
-                        limit="5"
-                        mode="dark"
-                        custom-styles="a { color: #e84393 !important; text-decoration: none !important; } a:hover { text-decoration: underline !important; }">
-                    </bsky-embed>
-                </div>
+                <img src="https://ghchart.rshah.org/e84393/lucasayb" alt="GitHub Contributions" style="max-width: 100%; height: auto;">
             </div>
         </div>
 
@@ -325,6 +303,5 @@
         </div>
     </div>
 
-    <script async src="https://cdn.jsdelivr.net/npm/bsky-embed/dist/bsky-embed.es.js" type="module"></script>
 </body>
 </html>
